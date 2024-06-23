@@ -9,13 +9,16 @@ use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Support\Facades\Storage;
 use illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
         $pageTitle = 'Employee List';
-
+        
+        confirmDelete();
+        
         return view('employee.index', compact('pageTitle'));
 
         // // ELOQUENT
@@ -99,6 +102,10 @@ class EmployeeController extends Controller
         }
 
         $employee->save();
+
+        Alert::success('Added Successfully', 'Employee Data Added Successfully.');
+
+        return redirect()->route('employees.index');
 
         return redirect()->route('employees.index');
     }
@@ -231,6 +238,8 @@ class EmployeeController extends Controller
         }
 
         $employee->delete();
+
+        Alert::success('Deleted Successfully', 'Employee Data Deleted Successfully.');
         return redirect()->route('employees.index');
     }
     public function downloadFile($employeeId)
